@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">FeedArticlesJetPack</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="appName">FeedArticles</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account_register">Don\'t have an account? Register!</string>
+    <string name="already_have_an_account_login">Already have an account? Login!</string>
+    <string name="comfirmation_password">Comfirmation Password</string>
+    <string name="log_off">Log off</string>
+    <string name="show_favorite">Show Favorite</string>
+    <string name="add_article">Add Article</string>
+    <string name="please_register">Please Register</string>
+    <string name="back">Back</string>
+    <string name="article_title">Article Title</string>
+    <string name="article_content">Article Content</string>
+    <string name="image_url">Image URL</string>
+    <string name="please_login">Please Login</string>
+    <string name="edit_article">Edit Article</string>
+    <string name="submit">Submit</string>
+    <string name="sport">Sport</string>
+    <string name="manga">Manga</string>
+    <string name="various">Various</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="please_fill_all_fields_and_choose_a_category">Veuillez remplir tous les champs et sélectionner une catégorie.</string>
+    <string name="created_at">Created at</string>
+</resources>

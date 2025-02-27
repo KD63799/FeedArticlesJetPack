@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.feedarticlesjetpack.ui.Splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.feedarticlesjetpack.ui.auth.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.feedarticlesjetpack.ui.auth.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.feedarticlesjetpack.ui.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_creaArticleFragment"
+            app:destination="@id/creaArticleFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_mainFragment_to_detailsArticleFragment"
+            app:destination="@id/detailsArticleFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_editArticleFragment"
+            app:destination="@id/editArticleFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/creaArticleFragment"
+        android:name="com.example.feedarticlesjetpack.ui.create.CreaArticleFragment"
+        android:label="fragment_crea_article"
+        tools:layout="@layout/fragment_crea_article" >
+        <action
+            android:id="@+id/action_creaArticleFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_creaArticleFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsArticleFragment"
+        android:name="com.example.feedarticlesjetpack.ui.DetailsArticleFragment"
+        android:label="fragment_details_article"
+        tools:layout="@layout/fragment_details_article" >
+        <argument
+            android:name="articleBdl"
+            app:argType="com.example.feedarticlesjetpack.DtosResponse.ArticleDto" />
+        <action
+            android:id="@+id/action_detailsArticleFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editArticleFragment"
+        android:name="com.example.feedarticlesjetpack.ui.edit.EditArticleFragment"
+        android:label="fragment_edit_article"
+        tools:layout="@layout/fragment_edit_article" >
+        <action
+            android:id="@+id/action_editArticleFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <argument android:name="articleBdl"
+            app:argType="com.example.feedarticlesjetpack.DtosResponse.ArticleDto" />
+    </fragment>
+</navigation>
