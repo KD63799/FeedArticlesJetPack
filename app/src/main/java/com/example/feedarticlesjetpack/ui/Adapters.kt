@@ -3,6 +3,7 @@ package com.example.feedarticlesjetpack.ui
 import com.example.feedarticlesjetpack.databinding.RvItemBinding
 import com.squareup.picasso.Picasso
 import android.graphics.Color
+import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.feedarticlesjetpack.DtosResponse.ArticleDto
 import com.example.feedarticlesjetpack.R
+import java.util.Locale
 
 class ArticleAdapter(
     private val onItemClick: (ArticleDto) -> Unit,
@@ -22,7 +24,10 @@ class ArticleAdapter(
         fun bind(article: ArticleDto) {
             binding.tvRvItemTitle.text = article.titre
             binding.tvRvContent.text = article.descriptif
-            binding.tvRvItemDate.text = article.created_at
+
+            val formatedDate = convertFormatDate(article.created_at)
+
+            binding.tvRvItemDate.text = formatedDate
 
             if (article.url_image.isEmpty()) {
                 binding.ivRvItem.setImageResource(R.drawable.feedarticles_logo)
@@ -68,4 +73,11 @@ class ArticleDiffCallback : DiffUtil.ItemCallback<ArticleDto>() {
 
     override fun areContentsTheSame(oldItem: ArticleDto, newItem: ArticleDto): Boolean =
         oldItem == newItem
+}
+
+fun convertFormatDate(date: String): String {
+    val dateInputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    val dateOutputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
+    val objectDatefromdateStr = dateInputFormat.parse(date)
+    return dateOutputFormat.format(objectDatefromdateStr) ?: "not a date"
 }

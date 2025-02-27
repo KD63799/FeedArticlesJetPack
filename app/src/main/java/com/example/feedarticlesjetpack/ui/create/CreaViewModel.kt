@@ -1,5 +1,6 @@
 package com.example.feedarticlesjetpack.ui.create
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,11 +9,13 @@ import com.example.exoremote.DbMethods.RemoteRepository
 import com.example.feedarticlesjetpack.DtosResponse.NewArticleDto
 import com.example.feedarticlesjetpack.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CreaViewModel @Inject constructor(
+    @ApplicationContext val context: Context,
     private val remoteRepository: RemoteRepository,
     private val sharedPreferences: android.content.SharedPreferences
 ) : ViewModel() {
@@ -30,7 +33,7 @@ class CreaViewModel @Inject constructor(
             val token = sharedPreferences.getString("token", null)
             val userId = sharedPreferences.getInt("user_id", -1)
             if (token == null || userId == -1) {
-                _userMessageLiveData.value = "Token ou ID invalide, veuillez vous reconnecter."
+                _userMessageLiveData.value = context.getString(R.string.invalid_token_or_id)
                 _navigationDestination.value = R.id.action_creaArticleFragment_to_loginFragment
                 return@launch
             }
@@ -46,10 +49,10 @@ class CreaViewModel @Inject constructor(
             val success = remoteRepository.addRemoteArticle(newArticleDto, token)
 
             if (success) {
-                _userMessageLiveData.value = "Article ajouté avec succès."
+                _userMessageLiveData.value = context.getString(R.string.article_added)
                 _navigationDestination.value = R.id.action_creaArticleFragment_to_mainFragment
             } else {
-                _userMessageLiveData.value = "Échec de l'ajout de l'article."
+                _userMessageLiveData.value = context.getString(R.string.add_article_failed)
             }
         }
     }

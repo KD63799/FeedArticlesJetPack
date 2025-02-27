@@ -1,5 +1,6 @@
 package com.example.feedarticlesjetpack.ui.auth
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,11 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.exoremote.DbMethods.RemoteRepository
 import com.example.feedarticlesjetpack.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
+    @ApplicationContext val context: Context,
     private val remoteRepository: RemoteRepository,
     private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
@@ -27,11 +30,11 @@ class RegisterViewModel @Inject constructor(
 
     fun checkRegisterForm(login: String, password: String, confirmPassword: String) {
         if (login.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            _userMessageLiveData.value = "Veuillez remplir tous les champs"
+            _userMessageLiveData.value = context.getString(R.string.please_fill_all_fields)
             return
         }
         if (password != confirmPassword) {
-            _userMessageLiveData.value = "Les mots de passe ne correspondent pas"
+            _userMessageLiveData.value = context.getString(R.string.passwords_dont_match)
             return
         }
         viewModelScope.launch {
@@ -42,18 +45,26 @@ class RegisterViewModel @Inject constructor(
                         registerResponse.token?.let { token ->
                             sharedPreferences.edit().putString("token", token).apply()
                         }
-                        _userMessageLiveData.value = "Inscription réussie"
+                        _userMessageLiveData.value =
+                            context.getString(R.string.registration_success)
 
                         _navigationDestination.value = R.id.action_registerFragment_to_mainFragment
 
                     }
-                    5 -> _userMessageLiveData.value = "Login déjà utilisé"
-                    0 -> _userMessageLiveData.value = "Inscription non réalisée"
-                    -1 -> _userMessageLiveData.value = "Problème de paramètre"
-                    else -> _userMessageLiveData.value = "Erreur inconnue (status: ${registerResponse.status})"
+                    5 -> _userMessageLiveData.value =
+                        context.getString(R.string.login_in_use)
+
+                    0 -> _userMessageLiveData.value =
+                        context.getString(R.string.registration_failed)
+
+                    -1 -> _userMessageLiveData.value =
+                        context.getString(R.string.parameter_issue)
+
+                    else -> _userMessageLiveData.value =
+                        "Erreur inconnue (status: ${registerResponse.status})"
                 }
             } else {
-                _userMessageLiveData.value = "Erreur de connexion"
+                _userMessageLiveData.value = context.getString(R.string.error_connection)
             }
         }
     }

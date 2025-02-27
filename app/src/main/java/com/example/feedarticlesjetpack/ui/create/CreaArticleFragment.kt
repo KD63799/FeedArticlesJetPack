@@ -23,7 +23,6 @@ class CreaArticleFragment : Fragment() {
 
     private val creaViewModel: CreaViewModel by viewModels()
 
-    // Variable pour stocker la catégorie sélectionnée (1: Sport, 2: Manga, 3: Various)
     private var selectedCategory: Int? = null
 
     override fun onCreateView(
@@ -37,7 +36,6 @@ class CreaArticleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Mettre à jour l'aperçu de l'image dès que l'URL change
         binding.tvCreaImgUrl.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val imageUrl = s?.toString()?.trim() ?: ""
@@ -54,21 +52,19 @@ class CreaArticleFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // Configurer les radio buttons pour la sélection de catégorie
-        binding.radioEditSport.setOnClickListener {
+        binding.radioBtnSport.setOnClickListener {
             selectedCategory = 1
-            updateRadioButtonsUI(binding.radioEditSport)
+            updateRadioButtonsUI(binding.radioBtnSport)
         }
-        binding.radioEditManga.setOnClickListener {
+        binding.radioBtnManga.setOnClickListener {
             selectedCategory = 2
-            updateRadioButtonsUI(binding.radioEditManga)
+            updateRadioButtonsUI(binding.radioBtnManga)
         }
-        binding.radioEditVarious.setOnClickListener {
+        binding.radioBtnVarious.setOnClickListener {
             selectedCategory = 3
-            updateRadioButtonsUI(binding.radioEditVarious)
+            updateRadioButtonsUI(binding.radioBtnVarious)
         }
 
-        // Bouton de soumission
         binding.btnSave.setOnClickListener {
             val title = binding.tvCreaTitleArticle.text.toString().trim()
             val content = binding.tvCreaContent.text.toString().trim()
@@ -82,27 +78,21 @@ class CreaArticleFragment : Fragment() {
             }
         }
 
-        // Observer les messages utilisateur
         creaViewModel.userMessageLiveData.observe(viewLifecycleOwner) { message ->
             if (message.isNotEmpty()) {
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             }
         }
 
-        // Observer la navigation
         creaViewModel.navigationDestination.observe(viewLifecycleOwner) { destinationId ->
             destinationId?.let { navController.navigate(it) }
         }
     }
 
-    /**
-     * Met à jour l'apparence des radio buttons.
-     * Le radio button sélectionné sera coché et les autres décochés.
-     */
     private fun updateRadioButtonsUI(selected: RadioButton) {
-        binding.radioEditSport.isChecked = false
-        binding.radioEditManga.isChecked = false
-        binding.radioEditVarious.isChecked = false
+        binding.radioBtnSport.isChecked = false
+        binding.radioBtnManga.isChecked = false
+        binding.radioBtnVarious.isChecked = false
 
         selected.isChecked = true
     }

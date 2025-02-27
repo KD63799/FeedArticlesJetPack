@@ -74,7 +74,7 @@
             android:id="@+id/radio_main_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="All"
+            android:text="@string/all"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/radio_main_sport"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -84,7 +84,7 @@
             android:id="@+id/radio_main_sport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sport"
+            android:text="@string/sport"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/radio_main_Manga"
             app:layout_constraintStart_toEndOf="@+id/radio_main_all" />
@@ -93,7 +93,7 @@
             android:id="@+id/radio_main_Manga"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Manga"
+            android:text="@string/manga"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/radio_main_various"
             app:layout_constraintStart_toEndOf="@+id/radio_main_sport" />
@@ -102,7 +102,7 @@
             android:id="@+id/radio_main_various"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Various"
+            android:text="@string/various"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

@@ -88,30 +88,30 @@
                 android:text="@string/sport"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/radio_edit_manga"
+                app:layout_constraintEnd_toStartOf="@+id/radio_btn_manga"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <RadioButton
-                android:id="@+id/radio_edit_manga"
+                android:id="@+id/radio_btn_manga"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="@string/manga"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/radio_edit_various"
+                app:layout_constraintEnd_toStartOf="@+id/radio_btn_various"
                 app:layout_constraintStart_toEndOf="@+id/radio_edit_sport" />
 
             <RadioButton
-                android:id="@+id/radio_edit_various"
+                android:id="@+id/radio_btn_various"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/various"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/radio_edit_manga" />
+                app:layout_constraintStart_toEndOf="@+id/radio_btn_manga" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -122,6 +122,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
+            android:theme="@style/BlueButton"
             android:text="@string/delete"
             app:layout_constraintTop_toBottomOf="@id/radio_buttons_container"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,6 +136,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
+            android:theme="@style/BlueButton"
             android:text="@string/update"
             app:layout_constraintTop_toBottomOf="@id/radio_buttons_container"
             app:layout_constraintStart_toEndOf="@id/btn_edit_delete"

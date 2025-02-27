@@ -22,37 +22,37 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_edit_preview">
 
             <RadioButton
-                android:id="@+id/radio_edit_sport"
+                android:id="@+id/radio_btn_sport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text="Sport"
+                android:text="@string/sport"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/radio_edit_manga"
+                app:layout_constraintEnd_toStartOf="@+id/radio_btn_manga"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <RadioButton
-                android:id="@+id/radio_edit_manga"
+                android:id="@+id/radio_btn_manga"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text="Manga"
+                android:text="@string/manga"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/radio_edit_various"
-                app:layout_constraintStart_toEndOf="@+id/radio_edit_sport" />
+                app:layout_constraintEnd_toStartOf="@+id/radio_btn_various"
+                app:layout_constraintStart_toEndOf="@+id/radio_btn_sport" />
 
             <RadioButton
-                android:id="@+id/radio_edit_various"
+                android:id="@+id/radio_btn_various"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Various"
+                android:text="@string/various"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/radio_edit_manga" />
+                app:layout_constraintStart_toEndOf="@+id/radio_btn_manga" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="New Article"
+            android:text="@string/new_article"
             android:theme="@style/TitleText"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -129,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Submit"
+            android:text="@string/submit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radio_buttons_container" />

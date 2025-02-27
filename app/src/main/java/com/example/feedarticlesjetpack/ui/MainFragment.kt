@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.feedarticlesjetpack.R
 import com.example.feedarticlesjetpack.util.navController
+import com.example.feedarticlesjetpack.ViewModels.MainFragmentViewModel
 import com.example.feedarticlesjetpack.databinding.FragmentMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,31 +21,21 @@ class MainFragment : Fragment() {
     private lateinit var adapter: ArticleAdapter
     private val mainViewModel: MainFragmentViewModel by viewModels()
 
-    private var favoritesFilterEnabled = false
-
-    private var currentCategory: Int? = null
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: android.view.LayoutInflater, container: android.view.ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): android.view.View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Vous pouvez récupérer d'autres arguments si nécessaire avec Safe Args ici.
-        arguments?.let {
-            it.getInt("artieID")
-        }
 
         binding.listAdapter.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = ArticleAdapter(
             onItemClick = { article ->
-                // Utiliser la fonction isOwner() du ViewModel pour décider de la navigation
                 if (mainViewModel.isOwner(article)) {
                     val navDir =
                         MainFragmentDirections.actionMainFragmentToEditArticleFragment(article)
@@ -53,29 +43,27 @@ class MainFragment : Fragment() {
                 } else {
                     val navDir =
                         MainFragmentDirections.actionMainFragmentToDetailsArticleFragment(article)
-                    navController.navigate(navDir)
+                    findNavController().navigate(navDir)
                 }
             },
             onFavoriteClick = {
-                // Gestion du clic sur l'icône favorite (filtrage dans MainFragment)
+                // Ici, dans MainFragment, le clic sur l'étoile ne bascule pas le favori
+                // Il sert à filtrer uniquement les articles favoris.
             }
         )
-
         binding.listAdapter.adapter = adapter
 
-        // Observer la liste des articles et soumettre la liste à l'adapter.
         mainViewModel.articlesLiveData.observe(viewLifecycleOwner) { articles ->
             adapter.submitList(articles)
+            binding.swipeRefresh.isRefreshing = false
         }
 
-        // Observer les messages utilisateur
         mainViewModel.userMessageLiveData.observe(viewLifecycleOwner) { message ->
             if (message.isNotEmpty()) {
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             }
         }
 
-        // Observer la navigation
         mainViewModel.navigationDestination.observe(viewLifecycleOwner) { destination ->
             destination?.let { navController.navigate(it) }
         }
@@ -85,11 +73,9 @@ class MainFragment : Fragment() {
         }
 
         binding.btnMainFav.setOnClickListener {
-            // Toggle du filtre favoris
-            favoritesFilterEnabled = !favoritesFilterEnabled
-            mainViewModel.setFavoritesFilter(favoritesFilterEnabled)
-            // Met à jour l'icône en fonction de l'état
-            if (favoritesFilterEnabled) {
+            val newState = !binding.btnMainFav.isSelected
+            mainViewModel.setFavoritesFilter(newState)
+            if (newState) {
                 binding.btnMainFav.setImageResource(android.R.drawable.btn_star_big_on)
             } else {
                 binding.btnMainFav.setImageResource(android.R.drawable.btn_star_big_off)
@@ -100,52 +86,38 @@ class MainFragment : Fragment() {
             mainViewModel.logOff()
         }
 
-        // Configuration des radio buttons pour le filtre par catégorie.
+        // Configuration des radio buttons pour le filtre par catégorie
         binding.radioMainAll.setOnClickListener {
-            if (currentCategory != null) {
-                currentCategory = null
-                mainViewModel.setCategoryFilter(null)
-                updateRadioButtonsUI(binding.radioMainAll)
-            }
+            mainViewModel.setSelectedCategory(null)
+            updateRadioButtonsUI(null)
         }
         binding.radioMainSport.setOnClickListener {
-            currentCategory = if (currentCategory == 1) null else 1
-            mainViewModel.setCategoryFilter(currentCategory)
-            updateRadioButtonsUI(binding.radioMainSport)
+            mainViewModel.setSelectedCategory(1)
+            updateRadioButtonsUI(1)
         }
         binding.radioMainManga.setOnClickListener {
-            currentCategory = if (currentCategory == 2) null else 2
-            mainViewModel.setCategoryFilter(currentCategory)
-            updateRadioButtonsUI(binding.radioMainManga)
+            mainViewModel.setSelectedCategory(2)
+            updateRadioButtonsUI(2)
         }
         binding.radioMainVarious.setOnClickListener {
-            currentCategory = if (currentCategory == 3) null else 3
-            mainViewModel.setCategoryFilter(currentCategory)
-            updateRadioButtonsUI(binding.radioMainVarious)
+            mainViewModel.setSelectedCategory(3)
+            updateRadioButtonsUI(3)
         }
 
         binding.swipeRefresh.setOnRefreshListener {
             mainViewModel.loadArticles()
-            binding.swipeRefresh.isRefreshing = false
         }
-
     }
 
     /**
-     * Met à jour l'apparence des radio buttons pour refléter le filtre actif.
+     * Met à jour l'apparence des radio buttons selon la catégorie sélectionnée.
+     * @param selectedCategory La catégorie sélectionnée (null signifie "All")
      */
-    private fun updateRadioButtonsUI(selected: RadioButton) {
-        binding.radioMainAll.isChecked = false
-        binding.radioMainSport.isChecked = false
-        binding.radioMainManga.isChecked = false
-        binding.radioMainVarious.isChecked = false
-
-        // Si aucun filtre n'est appliqué, cochez "All"
-        if (currentCategory == null) {
-            binding.radioMainAll.isChecked = true
-        } else {
-            selected.isChecked = true
-        }
+    private fun updateRadioButtonsUI(selectedCategory: Int?) {
+        binding.radioMainAll.isChecked = selectedCategory == null
+        binding.radioMainSport.isChecked = selectedCategory == 1
+        binding.radioMainManga.isChecked = selectedCategory == 2
+        binding.radioMainVarious.isChecked = selectedCategory == 3
     }
 
     override fun onDestroyView() {

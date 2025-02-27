@@ -32,7 +32,6 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             val success = remoteRepository.toggleFavorite(currentArticle.id, token)
             if (success) {
-                // Inversez l'état favori : 1 devient 0, 0 devient 1.
                 val updatedArticle =
                     currentArticle.copy(is_fav = if (currentArticle.is_fav == 1) 0 else 1)
                 _article.value = updatedArticle

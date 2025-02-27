@@ -18,8 +18,14 @@
     <style name="BlueButton" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">#0099CC</item>
         <item name="android:textColor">#FFFFFF</item>
-        <item name="android:radius">0dp</item>
+        <item name="shapeAppearanceOverlay">@style/SquareShape</item>
     </style>
+
+    <style name="SquareShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">0dp</item>
+    </style>
+
 
     <style name="Theme.FeedArticlesJetPack" parent="Base.Theme.FeedArticlesJetPack" />
 </resources>

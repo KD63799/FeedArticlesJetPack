@@ -43,9 +43,7 @@ class LoginFragment : Fragment() {
         }
 
         loginViewModel.userMessageLiveData.observe(viewLifecycleOwner) { message ->
-            if (!message.isNullOrEmpty()) {
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-            }
         }
 
         binding.tvLoginNoaccount.setOnClickListener {

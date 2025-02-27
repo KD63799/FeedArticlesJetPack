@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Details Article"
+            android:text="@string/details_article"
             android:theme="@style/TitleText"
             android:textSize="24dp"
             app:layout_constraintEnd_toEndOf="parent"

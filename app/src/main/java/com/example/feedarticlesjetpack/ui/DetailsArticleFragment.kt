@@ -43,13 +43,11 @@ class DetailsArticleFragment : Fragment() {
 
                 tvDetailsDate.text = "${getString(R.string.created_at)} ${formatedDate}"
 
-                // Mise à jour de l'aperçu d'image
                 Picasso.get()
                     .load(article.url_image)
                     .placeholder(R.drawable.feedarticles_logo)
                     .into(ivDetailsArticle)
 
-                // Mise à jour du texte de catégorie en appelant getCategoryName()
                 tvDetailsCategory.text = detailsViewModel.getCategoryName()
             }
 

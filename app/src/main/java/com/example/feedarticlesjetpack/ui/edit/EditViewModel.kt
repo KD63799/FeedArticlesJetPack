@@ -1,5 +1,6 @@
 package com.example.feedarticlesjetpack.ui.edit
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,9 +13,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import android.content.SharedPreferences
 import com.example.feedarticlesjetpack.R
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 @HiltViewModel
 class EditViewModel @Inject constructor(
+    @ApplicationContext val context: Context,
     private val remoteRepository: RemoteRepository,
     private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
@@ -40,7 +43,6 @@ class EditViewModel @Inject constructor(
 
     fun setArticle(article: ArticleDto) {
         _article.value = article
-        // Initialisez la catégorie sélectionnée à celle de l'article
         _selectedCategory.value = article.categorie
     }
 
@@ -51,13 +53,13 @@ class EditViewModel @Inject constructor(
     fun updateArticle(title: String, content: String, imageUrl: String) {
         val category = _selectedCategory.value
         if (title.isBlank() || content.isBlank() || imageUrl.isBlank() || category == null || category == 0) {
-            _messageLiveData.value = "Veuillez remplir tous les champs et sélectionner une catégorie."
+            _messageLiveData.value = context.getString(R.string.please_fill_all_field_and_category)
             return
         }
         viewModelScope.launch {
             val token = sharedPreferences.getString("token", null)
             if (token == null) {
-                _messageLiveData.value = "Token invalide, veuillez vous reconnecter."
+                _messageLiveData.value = context.getString(R.string.invalid_token)
                 return@launch
             }
             val currentArticle = _article.value ?: return@launch
@@ -76,10 +78,10 @@ class EditViewModel @Inject constructor(
                     url_image = imageUrl,
                     categorie = category
                 )
-                _messageLiveData.value = "Article mis à jour avec succès."
+                _messageLiveData.value = context.getString(R.string.article_update)
                 _navigationDestination.value = R.id.action_editArticleFragment_to_mainFragment
             } else {
-                _messageLiveData.value = "Erreur lors de la mise à jour de l'article."
+                _messageLiveData.value = context.getString(R.string.updated_error)
             }
         }
     }
@@ -89,25 +91,15 @@ class EditViewModel @Inject constructor(
             val token = sharedPreferences.getString("token", null)
             val currentArticle = _article.value ?: return@launch
             if (token == null) {
-                _messageLiveData.value = "Token invalide, veuillez vous reconnecter."
+                _messageLiveData.value = context.getString(R.string.invalid_token)
                 return@launch
             }
             val success = remoteRepository.deleteRemoteArticle(currentArticle.id, token)
             if (success) {
-                _messageLiveData.value = "Article supprimé."
+                _messageLiveData.value = context.getString(R.string.article_deleted)
             } else {
-                _messageLiveData.value = "Erreur lors de la suppression de l'article."
+                _messageLiveData.value = context.getString(R.string.error_delete)
             }
-        }
-    }
-
-    // Optionnel : fonction pour récupérer le libellé de la catégorie
-    fun getCategoryName(): String {
-        return when (_selectedCategory.value) {
-            1 -> "Sport"
-            2 -> "Manga"
-            3 -> "Divers"
-            else -> "Inconnue"
         }
     }
 }

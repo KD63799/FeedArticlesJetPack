@@ -28,6 +28,7 @@ object AppModule {
         return context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     }
 
+
     @Provides
     @Singleton
     fun provideMoshi(): Moshi = Moshi.Builder()

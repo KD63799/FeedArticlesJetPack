@@ -1,4 +1,4 @@
-package com.example.feedarticlesjetpack.ui
+package com.example.feedarticlesjetpack.ViewModels
 
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
@@ -18,6 +18,8 @@ class MainFragmentViewModel @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
+    private val _allArticles = MutableLiveData<List<ArticleDto>>()
+
     private val _articlesLiveData = MutableLiveData<List<ArticleDto>>()
     val articlesLiveData: LiveData<List<ArticleDto>>
         get() = _articlesLiveData
@@ -30,7 +32,10 @@ class MainFragmentViewModel @Inject constructor(
     val userMessageLiveData: LiveData<String>
         get() = _userMessageLiveData
 
-    private var currentCategoryFilter: Int? = null  
+    private val _selectedCategory = MutableLiveData<Int?>()
+    val selectedCategory: LiveData<Int?>
+        get() = _selectedCategory
+
     private var favoritesFilterEnabled: Boolean = false
 
     init {
@@ -46,31 +51,28 @@ class MainFragmentViewModel @Inject constructor(
                 return@launch
             }
             val articles = remoteRepository.getRemoteArticles(token)
-            _articlesLiveData.value = applyFilters(articles)
+            _allArticles.value = articles
+            applyFilters()
         }
     }
 
-    private fun applyFilters(articles: List<ArticleDto>): List<ArticleDto> {
-        var filtered = articles
-        currentCategoryFilter?.let { category ->
-            filtered = filtered.filter { it.categorie == category }
+    private fun applyFilters() {
+        val category = _selectedCategory.value
+        val filtered = _allArticles.value?.filter { article ->
+            (category == null || article.categorie == category) &&
+                    (!favoritesFilterEnabled || article.is_fav == 1)
         }
-        if (favoritesFilterEnabled) {
-            filtered = filtered.filter { it.is_fav == 1 }
-        }
-        return filtered
+        _articlesLiveData.value = filtered ?: emptyList()
     }
 
-    fun setCategoryFilter(category: Int?) {
-        currentCategoryFilter = category
-        _articlesLiveData.value = _articlesLiveData.value?.let { applyFilters(it) }
-        loadArticles()
+    fun setSelectedCategory(category: Int?) {
+        _selectedCategory.value = category
+        applyFilters()
     }
 
     fun setFavoritesFilter(enabled: Boolean) {
         favoritesFilterEnabled = enabled
-        _articlesLiveData.value = _articlesLiveData.value?.let { applyFilters(it) }
-        loadArticles()
+        applyFilters()
     }
 
     fun logOff() {
@@ -82,10 +84,8 @@ class MainFragmentViewModel @Inject constructor(
         _navigationDestination.value = R.id.action_mainFragment_to_creaArticleFragment
     }
 
-
     fun isOwner(article: ArticleDto): Boolean {
         val userId = sharedPreferences.getInt("user_id", -1)
         return article.id_u == userId
     }
 }
-
